@@ -19,6 +19,7 @@ template <typename T>
 ourVector<T>::ourVector(int a, int b)
 {
     this->a = (a < 0 ? 0 : a);
+    std::cout << "A: " << a << std::endl;
     if (b < a) {
         this->b = a;
     } else {
