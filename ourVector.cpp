@@ -8,8 +8,11 @@ class Vector {
         size_t _capacity;
     public:
         // Базовые конструкторы с делегированием
-        Vector(size_t capacity, size_t size) : _size(size), _capacity(capacity) {
+        Vector(size_t capacity, size_t size) : _size(size){
             _data = new T[_capacity];
+            for (int i = 0; i < _size; ++i) {
+                _data[i] = T(); // Инициализация элементов по умолчанию
+            }
         }
         Vector(size_t size) : Vector(size, size) {}
         Vector() : Vector(0, 0) {}
@@ -62,7 +65,9 @@ class Vector {
             }
             return _data[index];
         }
+        // Возвращает количество элементов в векторе
         size_t size() const { return _size; }
+        // Возвращает текущую емкость вектора
         size_t capacity() const { return _capacity; }
 };
 
