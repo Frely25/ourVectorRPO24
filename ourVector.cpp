@@ -35,9 +35,9 @@ public:
 template <typename T>
 Vector<T>::Vector(size_t size, size_t capacity)
     : _size(size),
-      _capacity(capacity < size ? size : capacity),
-      _data(new T[_capacity])
+      _capacity(capacity < size ? size : capacity)
 {
+    _data = new T[_capacity];
     for (size_t i = 0; i < _size; ++i) {
         _data[i] = T();
     }
@@ -56,7 +56,7 @@ template <typename T>
 Vector<T>::Vector(const Vector& other)
     : _size(other._size),
       _capacity(other._capacity),
-      _data(new T[_capacity])
+      _data(new T[other._capacity])
 {
     for (size_t i = 0; i < _size; ++i) {
         _data[i] = other._data[i];
@@ -171,9 +171,16 @@ size_t Vector<T>::capacity() const {
     return _capacity;
 }
 int main() {
-    Vector<int> vec(new int[5]{53, 62, 72, 7, 4}, 5);
-    for (size_t i = 0; i < vec.size(); ++i) {
+    int arr[5] = {53, 62, 72, 7, 4};
+    Vector<int> vec(arr, 5);
+    Vector<int> b = vec;
+    for (int i = 0; i < vec.size(); i++) {
         std::cout << vec.at(i) << " ";
+    }
+    std::cout << std::endl;
+
+    for (int i = 0; i < b.size(); i++) {
+        std::cout << b.at(i) << " ";
     }
     std::cout << std::endl;
     return 0;
