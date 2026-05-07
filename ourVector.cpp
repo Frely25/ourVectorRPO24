@@ -22,6 +22,7 @@ public:
     ~Vector();
 
     // Методы
+    // Методы на изменение кол-ва элементов
     void push_back(const T& value);
     void insert(const T& value, size_t index);
     void pop_back();
@@ -29,9 +30,17 @@ public:
     void erase(size_t start_index, size_t end_index);
     void clear();
 
+    // Методы на изменение емкости
+    void reserve(size_t quantity);
+    void shrink_to_fit();
+
+    // Возвращение элементов
     const T& at(size_t index) const;
     T& at(size_t index);
 
+    const T& operator[](size_t index);
+
+    // Информация о массиве
     size_t size() const;
     size_t capacity() const;
 
@@ -261,6 +270,45 @@ T& Vector<T>::at(size_t index) {
     return _data[index];
 }
 
+// Изменяет емкость массива (нельзя делать меньше) 
+template <typename T>
+void Vector<T>::reserve(size_t quantity) {
+    if (quantity > _capacity) {
+        T* new_data = new T[quantity];
+
+        for (size_t i = 0; i < _size; i++) {
+            new_data[i] = _data[i];
+        }
+
+        delete[] _data;
+        _data = new_data;
+        _capacity = quantity;
+    }
+}
+
+template <typename T>
+void Vector<T>::shrink_to_fit() {
+    if (_size < _capacity) {
+        T* new_data = new T[_size];
+
+        for (size_t i = 0; i < _size; i++) {
+            new_data[i] = _data[i];
+        }
+        delete[] _data;
+        _data = new_data;
+        _capacity = _size;
+    }
+}
+
+// Возвращает не изменяемый элемент по индексу. Пример использования: int value = vec.at(1)
+template <typename T>
+const T& Vector<T>::operator[](size_t index) {
+    if (index >= _size) {
+        throw std::out_of_range("Index out of range");
+    }
+    return _data[index];
+}
+
 // Возвращает кол-во элементов
 template <typename T>
 size_t Vector<T>::size() const {
@@ -296,6 +344,17 @@ int main() {
     vec.erase(1, 4);
     std::cout << vec;
     vec.showInfo();
+
+    std::cout << vec[1] << std::endl;
     
+    vec.reserve(50);
+    std::cout << vec;
+    vec.showInfo();
+
+    vec.shrink_to_fit();
+    std::cout << vec;
+    vec.showInfo();
+
+
     return 0;
 }
