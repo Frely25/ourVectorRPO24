@@ -204,7 +204,7 @@ void Vector<T>::erase(size_t index) {
     for (size_t i = 0; i < _size; i++) {
         if (i < index) {
             new_data[i] = _data[i];
-        } else if (i > index) {
+        } else if (i >= index) {
             new_data[i] = _data[i + 1];
         }
     }
@@ -268,11 +268,7 @@ int main() {
     vec.push_back(25); //
     std::cout << vec;
     vec.showInfo();
-    
-    vec.pop_back(); //
-    std::cout << vec;
-    vec.showInfo();
-    
+
     vec.erase(2);
     std::cout << vec;
     vec.showInfo();
