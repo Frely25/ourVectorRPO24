@@ -30,6 +30,8 @@ public:
     void erase(size_t start_index, size_t end_index);
     void clear();
 
+    Vector<T> operator+(const Vector<T>& other);
+
     // Методы на изменение емкости
     void reserve(size_t quantity);
     void shrink_to_fit();
@@ -38,13 +40,17 @@ public:
     const T& at(size_t index) const;
     T& at(size_t index);
 
-    const T& operator[](size_t index);
+    T& operator[](size_t index);
 
     // Информация о массиве
     size_t size() const;
     size_t capacity() const;
 
     void showInfo() { std::cout << "Info: " << "\t_size = " << _size << "\n\t_capacity: " << _capacity << std::endl; }
+
+    // Прочее
+    bool operator==(const Vector<T> other);
+    bool Equal(const Vector<T>& other); 
 };
 
 // Конструктор по размеру и емкости
@@ -252,6 +258,23 @@ void Vector<T>::clear() {
     _size = 0;
 }
 
+// Метод складывает 2 вектора в один
+template <typename T>
+Vector<T> Vector<T>::operator+(const Vector<T>& other){
+    size_t new_size = this->_size + other._size;
+    Vector<T> new_vec(new_size, new_size);
+
+    for (size_t i = 0; i < new_vec._size; i++) {
+        if (i < new_vec.size() - other._size) {
+            new_vec[i] = this->_data[i];
+        } else {
+            new_vec[i] = other._data[i - this->_size];
+        }
+    }
+    
+    return new_vec;
+}
+
 // Возвращает не изменяемый элемент по индексу. Пример использования: int value = vec.at(1)
 template <typename T>
 const T& Vector<T>::at(size_t index) const {
@@ -302,7 +325,7 @@ void Vector<T>::shrink_to_fit() {
 
 // Возвращает не изменяемый элемент по индексу. Пример использования: int value = vec.at(1)
 template <typename T>
-const T& Vector<T>::operator[](size_t index) {
+T& Vector<T>::operator[](size_t index) {
     if (index >= _size) {
         throw std::out_of_range("Index out of range");
     }
@@ -321,17 +344,40 @@ size_t Vector<T>::capacity() const {
     return _capacity;
 }
 
+// Сравнивает два вектора по элементам
+template <typename T> 
+bool Vector<T>::operator==(const Vector<T> other) {
+    if (this->_size != other._size) {
+        return false;
+    }
+    for (size_t i = 0; i < _size; i++) {
+        if (this->_data[i] != other._data[i]){
+            return false;
+        }
+    }
+    return true;
+}
+
+// Сравнивет два векторва по адрессам в оперативной памяти
+template <typename T>
+bool Vector<T>::Equal(const Vector<T>& other) {
+    if (this->_data == other._data) {
+        return true;
+    }
+    return false;
+}
+
+// Перегрузил поток вывода, чтобы было удобно выводит массив
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const Vector<T> vec) {
     os << "[ ";
     for (int i = 0; i < vec.size(); i++) {
         os << vec.at(i) << " ";
     }
-    os << "]\n";
+    os << "]";
     return os;
 }
 
 int main() {
-
     return 0;
 }
