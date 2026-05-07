@@ -332,29 +332,6 @@ std::ostream& operator<<(std::ostream& os, const Vector<T> vec) {
 }
 
 int main() {
-    Vector<int> vec(new int[5]{1, 2, 3, 4, 5}, 5);
-    
-    std::cout << vec;
-    vec.showInfo();
-
-    vec.push_back(25); //
-    std::cout << vec;
-    vec.showInfo();
-
-    vec.erase(1, 4);
-    std::cout << vec;
-    vec.showInfo();
-
-    std::cout << vec[1] << std::endl;
-    
-    vec.reserve(50);
-    std::cout << vec;
-    vec.showInfo();
-
-    vec.shrink_to_fit();
-    std::cout << vec;
-    vec.showInfo();
-
 
     return 0;
 }
