@@ -213,6 +213,30 @@ void Vector<T>::erase(size_t index) {
     _data = new_data;
 }
 
+template <typename T>
+void Vector<T>::erase(size_t start_index, size_t end_index) {
+    if (start_index >= _size || end_index > _size) {
+        throw std::out_of_range("Index out of range");
+    }
+    
+    // Тут просто математика (сколько элементов всего должно удалиться)
+    size_t diff = (end_index - start_index);
+    size_t new_size = _size - diff;
+
+    T* new_data = new T[new_size];
+
+    for (size_t i = 0; i < _size; i++) {
+        if (i < start_index) {
+            new_data[i] = _data[i];
+        } else if (i >= end_index) {
+            new_data[i - diff] = _data[i];
+        }
+    }
+    delete[] _data;
+    _data = new_data;
+    _size = new_size;
+}
+
 // Очищает все эелементы
 template <typename T>
 void Vector<T>::clear() {
@@ -269,7 +293,7 @@ int main() {
     std::cout << vec;
     vec.showInfo();
 
-    vec.erase(2);
+    vec.erase(1, 4);
     std::cout << vec;
     vec.showInfo();
     
